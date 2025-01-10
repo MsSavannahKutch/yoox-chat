@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yoox Chat</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+        }
+        header {
+            background: linear-gradient(90deg, #ff7e5f, #feb47b);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .container {
+            max-width: 500px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-top: 5px;
+        }
+        .btn {
+            background: linear-gradient(90deg, #ff7e5f, #feb47b);
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            width: 100%;
+        }
+        .btn:hover {
+            background: linear-gradient(90deg, #feb47b, #ff7e5f);
+        }
+        .icon-add {
+            font-size: 28px;
+            color: white;
+            background: #333;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            margin: 15px auto;
+            transition: all 0.3s ease;
+        }
+        .icon-add:hover {
+            background: #555;
+        }
+        .friend {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #eee;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            background: #fafafa;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .friend:hover {
+            background: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        Yoox Chat
+    </header>
+    <div class="container" id="step1">
+        <h2>Create Your Account</h2>
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Enter your Gmail" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password" required>
+            </div>
+            <button type="submit" class="btn">Sign Up</button>
+        </form>
+    </div>
+    <div class="container" id="step2" style="display: none;">
+        <h2>Email Verification</h2>
+        <p>A verification code has been sent to your email. Please enter it below:</p>
+        <form id="verifyForm">
+            <div class="form-group">
+                <label for="code">Verification Code</label>
+                <input type="text" id="code" placeholder="Enter code here" required>
+            </div>
+            <button type="submit" class="btn">Verify</button>
+        </form>
+    </div>
+    <div class="container" id="step3" style="display: none;">
+        <h2>Complete Your Profile</h2>
+        <form id="profileForm">
+            <div class="form-group">
+                <label for="profilePicture">Profile Picture</label>
+                <input type="file" id="profilePicture" accept="image/*" required>
+            </div>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Enter your username" required>
+            </div>
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" placeholder="Enter your full name" required>
+            </div>
+            <div class="form-group">
+                <label for="bio">Bio</label>
+                <textarea id="bio" placeholder="Write something about yourself" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn">Save Profile</button>
+        </form>
+    </div>
+    <div class="container" id="step4" style="display: none;">
+        <h2>Your Friends</h2>
+        <div id="friendsList"></div>
+        <div class="icon-add" id="addFriend">+</div>
+        <form id="addFriendForm" style="display: none;">
+            <div class="form-group">
+                <label for="friendUsername">Add a Friend</label>
+                <input type="text" id="friendUsername" placeholder="Enter friend's username" required>
+            </div>
+            <button type="submit" class="btn">Add Friend</button>
+        </form>
+    </div>
+    <script>
+        const step1 = document.getElementById('step1');
+        const step2 = document.getElementById('step2');
+        const step3 = document.getElementById('step3');
+        const step4 = document.getElementById('step4');
+
+        const registerForm = document.getElementById('registerForm');
+        const verifyForm = document.getElementById('verifyForm');
+        const profileForm = document.getElementById('profileForm');
+        const addFriendForm = document.getElementById('addFriendForm');
+        const addFriendButton = document.getElementById('addFriend');
+        const friendsList = document.getElementById('friendsList');
+
+        let friends = [];
+
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('A verification code has been sent to your email.');
+            step1.style.display = 'none';
+            step2.style.display = 'block';
+        });
+
+        verifyForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Email verified successfully!');
+            step2.style.display = 'none';
+            step3.style.display = 'block';
+        });
+
+        profileForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Profile updated successfully!');
+            step3.style.display = 'none';
+            step4.style.display = 'block';
+        });
+
+        addFriendButton.addEventListener('click', () => {
+            addFriendForm.style.display = addFriendForm.style.display === 'none' ? 'block' : 'none';
+        });
+
+        addFriendForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const friendUsername = document.getElementById('friendUsername').value;
+            if (!friends.includes(friendUsername)) {
+                friends.push(friendUsername);
+                const friendElement = document.createElement('div');
+                friendElement.className = 'friend';
+                friendElement.textContent = friendUsername;
+                friendsList.appendChild(friendElement);
+                alert(`${friendUsername} has been added to your friends list.`);
+                addFriendForm.style.display = 'none';
+                document.getElementById('friendUsername').value = '';
+            } else {
+                alert('This friend is already in your list.');
+            }
+        });
+    </script>
+</body>
+</html>
